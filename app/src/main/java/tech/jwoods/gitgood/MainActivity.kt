@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -11,9 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import io.reactivex.Observable
 import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.eclipse.egit.github.core.Repository
 import tech.jwoods.gitgood.github.Github
+import tech.jwoods.gitgood.github.GithubRepo
 import tech.jwoods.gitgood.ui.theme.GitGoodTheme
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -23,43 +29,44 @@ class MainActivity : ComponentActivity() {
         val gg: Github = Github()
 
         Observable
-            .create<Unit> { emitter ->
+            .create<List<GithubRepo>> { emitter ->
                 emitter.onNext(gg.getData())
             }
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                println(it)
+                setContent {
+                    MainActivityView(it)
+                }
             }
+    }
+}
 
-        val observable = Observable.create<String> { emitter ->
-            emitter.onNext("1")
-            emitter.onNext("2")
-            emitter.onNext("3")
-        }
-
-        observable.subscribe { println(it) }
-
-
-        setContent {
-            GitGoodTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+@Composable
+fun MainActivityView(repos: List<GithubRepo>) {
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+    GitGoodTheme {
+        Surface(color = MaterialTheme.colors.background) {
+            LazyColumn() {
+                items(repos) { repo ->
+                    Text(repo.name
+                            + " "
+                            + dateFormat.format(repo.date)
+                    )
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    GitGoodTheme {
-        Greeting("Phone")
-    }
+    val date: Date = Date()
+
+    val repos = listOf<GithubRepo>(
+        GithubRepo("Cool Repo 1", date),
+        GithubRepo("Cool Repo 2", date),
+    )
+    MainActivityView(repos)
 }
