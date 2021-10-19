@@ -1,6 +1,6 @@
 package tech.jwoods.gitgood.github
 
-import org.eclipse.egit.github.core.Repository
+import org.kohsuke.github.GHEventPayload
 import java.util.*
 
 data class GithubRepo(
@@ -8,10 +8,10 @@ data class GithubRepo(
     val date: Date,
 ) {
     companion object {
-        fun fromRepository(repo: Repository): GithubRepo {
+        fun fromRepository(repo: GHEventPayload.Repository): GithubRepo {
             return GithubRepo(
-                name = repo.name,
-                date = repo.updatedAt,
+                name = "something here",
+                date = Date(),
             )
         }
     }
