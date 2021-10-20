@@ -23,6 +23,7 @@ import io.reactivex.schedulers.Schedulers
 import tech.jwoods.gitgood.github.Github
 import tech.jwoods.gitgood.github.GithubRepo
 import tech.jwoods.gitgood.ui.theme.GitGoodTheme
+import tech.jwoods.gitgood.view.RepoHomeView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,72 +40,6 @@ class MainActivity : ComponentActivity() {
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                setContent {
-                    MainActivityView(it)
-                }
-            }
+            .subscribe { setContent { RepoHomeView(it) } }
     }
-}
-
-
-@Composable
-fun Title() {
-    Text(
-        text = "GitGood\n",
-        color = MaterialTheme.colors.primary,
-        style = MaterialTheme.typography.h1,
-    )
-}
-
-@Composable
-fun MainActivityView(repos: List<GithubRepo>) {
-    Title()
-    Surface(color = MaterialTheme.colors.background) {
-        LazyColumn {
-            var i = 0
-            item { Title() }
-            items(repos) { repo ->
-                if (i % 2 == 0) GitGoodTheme() { Row(repo, i) }
-                else Row(repo, i)
-                i++
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    val date: Date = Date()
-
-    val repos = listOf<GithubRepo>(
-        GithubRepo("Cool Repo 1", date),
-        GithubRepo("Cool Repo 2", date),
-    )
-    MainActivityView(repos)
-}
-
-@Composable
-fun Row(repo: GithubRepo, count: Int) {
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-    Row(modifier = Modifier.clickable(onClick = ::onRowClicked)) {
-        Text(text = "$count")
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = dateFormat.format(repo.date),
-            color = MaterialTheme.colors.secondaryVariant,
-            style = MaterialTheme.typography.subtitle2,
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = repo.name,
-            color = MaterialTheme.colors.primary,
-            style = MaterialTheme.typography.body1,
-        )
-    }
-}
-
-fun onRowClicked() {
-
 }
