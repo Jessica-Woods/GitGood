@@ -10,7 +10,7 @@ data class GithubRepo(
     companion object {
         fun fromRepository(repo: GHEventPayload.Repository): GithubRepo {
             return GithubRepo(
-                name = "something here",
+                name = "Repo Default Name",
                 date = Date(),
             )
         }

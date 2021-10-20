@@ -42,19 +42,6 @@ fun Title() {
     )
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    val date: Date = Date()
-
-    val repos = listOf<GithubRepo>(
-        GithubRepo("Cool Repo 1", date),
-        GithubRepo("Cool Repo 2", date),
-    )
-    RepoHomeView(repos)
-}
-
 @Composable
 fun Row(repo: GithubRepo, count: Int, onClick: () -> Unit) {
     val dateFormat = SimpleDateFormat("dd/MM/yyyy")
@@ -77,4 +64,17 @@ fun Row(repo: GithubRepo, count: Int, onClick: () -> Unit) {
 
 fun onRowClicked() {
     println("Row was clicked!")
+}
+
+// Previews
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    val date: Date = Date()
+
+    val repos = listOf<GithubRepo>(
+        GithubRepo("Cool Repo 1", date),
+        GithubRepo("Cool Repo 2", date),
+    )
+    RepoHomeView(repos)
 }
