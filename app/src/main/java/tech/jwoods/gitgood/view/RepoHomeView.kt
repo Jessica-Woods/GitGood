@@ -25,8 +25,7 @@ fun RepoHomeView(repos: List<GithubRepo>) {
             var i = 0
             item { Title() }
             items(repos) { repo ->
-                if (i % 2 == 0) GitGoodTheme() { Row(repo, i, ::onRowClicked) }
-                else Row(repo, i, ::onRowClicked)
+                Row(repo, i, ::onRowClicked)
                 i++
             }
         }

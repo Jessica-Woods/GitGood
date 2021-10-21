@@ -6,7 +6,7 @@ import io.reactivex.schedulers.Schedulers
 import tech.jwoods.gitgood.github.Github
 import tech.jwoods.gitgood.github.GithubRepo
 
-class RepoHomePresenter(val github: Github) {
+class RepoHomePresenter(private val github: Github) {
     fun observeViewModels(): Observable<List<GithubRepo>> {
         return Observable
             .create<List<GithubRepo>> { emitter ->
