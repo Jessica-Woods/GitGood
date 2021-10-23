@@ -9,7 +9,6 @@ class Github {
         // If you don't specify the GitHub user id then the sdk will retrieve it via /user endpoint
         val github = GitHubBuilder().withOAuthToken(BuildConfig.githubApiKey).build()
 
-
         val result = github.myself.allRepositories.map {
             GithubRepo(
                 name = it.value.name,
