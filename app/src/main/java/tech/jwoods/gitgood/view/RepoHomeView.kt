@@ -2,26 +2,37 @@ package tech.jwoods.gitgood.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Shapes
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import tech.jwoods.gitgood.github.GithubRepo
 import tech.jwoods.gitgood.ui.theme.GitGoodTheme
 import java.text.SimpleDateFormat
+import java.time.format.TextStyle
 import java.util.*
 
 @Composable
 fun RepoHomeView(repos: List<GithubRepo>) {
     Title()
     Surface(color = MaterialTheme.colors.background) {
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
             var i = 0
             item { Title() }
             items(repos) { repo ->
@@ -35,16 +46,20 @@ fun RepoHomeView(repos: List<GithubRepo>) {
 @Composable
 fun Title() {
     Text(
-        text = "GitGood\n",
+        modifier = Modifier.fillMaxWidth(),
+        text = "GitGood",
         color = MaterialTheme.colors.primary,
-        style = MaterialTheme.typography.h1,
+        fontSize = 50.sp,
+        textAlign = TextAlign.Center,
     )
 }
 
 @Composable
 fun Row(repo: GithubRepo, count: Int, onClick: () -> Unit) {
     val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-    androidx.compose.foundation.layout.Row(modifier = Modifier.clickable(onClick = onClick)) {
+    androidx.compose.foundation.layout.Row(
+        modifier = Modifier.clickable(onClick = onClick)
+    ) {
         Text(text = "$count")
         Spacer(modifier = Modifier.width(12.dp))
         Text(
